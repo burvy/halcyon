@@ -1,11 +1,31 @@
 extends CharacterBody3D
 
 
-@export var move_speed = 5.0
-@export var sprint_mul = 1.5
-@export var jump_speed = 4.5
+@export var move_speed: float = 5.0
+@export var jump_speed: float = 4.5
+@export var sprint_multiplier: float = 1.5
 
+@export var camera_sensitivity: float = 0.01
 
+@export var head: Node3D
+
+## logic to run on game start
+func _ready() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+## `_input`, but it only runs after normal `_input` to allow
+## it to cancel out input here. Useful to disallow mouse look
+## in menus or something
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		# rotate body left and right
+		rotate_y(-event.relative.x * camera_sensitivity)
+		# rotate head up and down
+		head.rotate_x(-event.relative.y * camera_sensitivity)
+		# dont allow rotation past 90 degrees
+		clamp(head.rotation.x, -PI/2, PI/2)
+
+## per physics-tick logic
 func _physics_process(delta: float) -> void:
 
 	var grounded: bool = is_on_floor()
@@ -35,7 +55,7 @@ func handle_jump(jumping: bool, grounded: bool) -> void:
 ## applies motion
 ## if the player is not grounded, they cannot move.
 ## if the player is not trying to move, do not move.
-## if the player is sprinting, apply `sprint_mul` to their `move_speed`.
+## if the player is sprinting, apply `sprint_multiplier` to their `move_speed`.
 ## otherwise, they will move at the normal `move_speed`
 func handle_motion(sprinting: bool, grounded: bool, desire: Vector2) -> void:
 	# skip movement if not touching the ground
@@ -52,7 +72,7 @@ func handle_motion(sprinting: bool, grounded: bool, desire: Vector2) -> void:
 	var direction: Vector3 = (transform.basis * Vector3(desire.x, 0, desire.y))
 
 	# determines the player's speed based on if they are sprinting
-	var move = (move_speed * sprint_mul) if sprinting else move_speed
+	var move = (move_speed * sprint_multiplier) if sprinting else move_speed
 
 	# multiplies the direction vector by speed,
 	# adding that to player velocity
