@@ -19,7 +19,7 @@ script = ExtResource("2_g2els")
 raycast = NodePath("RayCast3D")
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Arms" unique_id=1246182010]
-transform = Transform3D(1, 0, 0, 0, -0.99999976, -8.7422755e-08, 0, 8.7422755e-08, -0.99999976, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0)
 
 [node name="PlayerModel" type="Skeleton3D" parent="." unique_id=1289631348]
 
