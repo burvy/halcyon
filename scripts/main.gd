@@ -8,6 +8,9 @@ extends Node3D
 const PORT: int = 14641
 const WS_PORT: int = 14642
 
+const CERT_DIR: String = "C:/burvy/certs/webtrans.burvy.dev"
+const DEFAULT_SERVER: String = "webtrans.burvy.dev"
+
 const MAX_PLAYERS: int = 64
 
 
@@ -16,6 +19,11 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 func _on_join_online_pressed() -> void:
+	join_game_online(DEFAULT_SERVER)
+	menu.hide()
+
+
+func _on_join_online_custom_pressed() -> void:
 	join_game_online(input_address.text)
 	menu.hide()
 
@@ -60,8 +68,14 @@ func host_game_headed() -> void:
 
 ## host the game but renderless for websocket and performance
 func host_game_renderless() -> void:
+	var key: CryptoKey = CryptoKey.new()
+	key.load(CERT_DIR + "/webtrans.burvy.dev-key.pem")
+	var cert: X509Certificate = X509Certificate.new()
+	cert.load(CERT_DIR + "/webtrans.burvy.dev-chain.pem")
+	var tls_options: TLSOptions = TLSOptions.server(key, cert)
+
 	var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
-	peer.create_server(WS_PORT)
+	peer.create_server(WS_PORT, "*", tls_options)
 	multiplayer.multiplayer_peer = peer
 
 
@@ -72,5 +86,5 @@ func join_game_offline(address: String) -> void:
 
 func join_game_online(address: String) -> void:
 	var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
-	peer.create_client("ws://%s:%d" % [address, WS_PORT])
+	peer.create_client("wss://%s:%d" % [address, WS_PORT])
 	multiplayer.multiplayer_peer = peer
