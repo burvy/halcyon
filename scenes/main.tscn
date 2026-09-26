@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://da1qsjcn71o18"]
+
+[ext_resource type="PackedScene" uid="uid://cefgnum6eprwq" path="res://scenes/test_level.tscn" id="1_o5qli"]
+
+[node name="Main" type="Node3D" unique_id=1758475354]
+
+[node name="TestLevel" parent="." unique_id=1039025625 instance=ExtResource("1_o5qli")]
+
+[node name="Players" type="Node" parent="." unique_id=935041711]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=924344891]
+_spawnable_scenes = PackedStringArray("uid://ve1kpwjb3l2a")
+spawn_path = NodePath("../Players")
