@@ -69,13 +69,19 @@ func host_game_headed() -> void:
 ## host the game but renderless for websocket and performance
 func host_game_renderless() -> void:
 	var key: CryptoKey = CryptoKey.new()
-	key.load(CERT_DIR + "/webtrans.burvy.dev-key.pem")
+	var key_err: Error = key.load(CERT_DIR + "/webtrans.burvy.dev-key.pem")
+	print("key load ", error_string(key_err))
+
 	var cert: X509Certificate = X509Certificate.new()
-	cert.load(CERT_DIR + "/webtrans.burvy.dev-chain.pem")
+	var cert_err: Error = cert.load(CERT_DIR + "/webtrans.burvy.dev-chain.pem")
+	print("cert load: ", error_string(cert_err))
+
 	var tls_options: TLSOptions = TLSOptions.server(key, cert)
 
 	var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
-	peer.create_server(WS_PORT, "*", tls_options)
+	var server_err: Error = peer.create_server(WS_PORT, "*", tls_options)
+	print("server load ", error_string(server_err))
+
 	multiplayer.multiplayer_peer = peer
 
 

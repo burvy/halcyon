@@ -47,6 +47,10 @@ alignment = 1
 layout_mode = 2
 text = "JOIN ONLINE SERVER"
 
+[node name="JoinOnlineCustom" type="Button" parent="UI/MenuContainer/Menu" unique_id=218398715]
+layout_mode = 2
+text = "JOIN CUSTOM SERVER"
+
 [node name="JoinOffline" type="Button" parent="UI/MenuContainer/Menu" unique_id=1414306069]
 layout_mode = 2
 text = "JOIN OFFLINE SERVER"
@@ -60,6 +64,7 @@ layout_mode = 2
 text = "HOST RENDERLESS SERVER"
 
 [connection signal="pressed" from="UI/MenuContainer/Menu/JoinOnline" to="." method="_on_join_online_pressed"]
+[connection signal="pressed" from="UI/MenuContainer/Menu/JoinOnlineCustom" to="." method="_on_join_online_custom_pressed"]
 [connection signal="pressed" from="UI/MenuContainer/Menu/JoinOffline" to="." method="_on_join_offline_pressed"]
 [connection signal="pressed" from="UI/MenuContainer/Menu/HostRendered" to="." method="_on_host_rendered_pressed"]
 [connection signal="pressed" from="UI/MenuContainer/Menu/HostRenderless" to="." method="_on_host_renderless_pressed"]
