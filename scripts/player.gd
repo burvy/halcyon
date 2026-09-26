@@ -26,7 +26,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		free_mouse()
 	if event is InputEventMouseButton:
 		lock_mouse()
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and mouse_is_captured():
 		handle_look(event)
 
 ## per physics-tick logic
@@ -68,6 +68,9 @@ func lock_mouse() -> void:
 ## frees the mouse
 func free_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func mouse_is_captured() -> bool:
+	return Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
 
 # Mouse Locking - END
 
