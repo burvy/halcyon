@@ -8,23 +8,23 @@ extends CharacterBody3D
 @export var camera_sensitivity: float = 0.01
 
 @export var head: Node3D
+@export var eyes: Camera3D
 
 ## logic to run on game start
 func _ready() -> void:
 	# locks the mouse when the game starts
 	lock_mouse()
-
-func _input(event: InputEvent) -> void:
-	if Input.is_action_pressed("ui_close_dialog"):
-		free_mouse()
-	if event is InputEventMouseButton:
-		lock_mouse()
-
+	# prevents players from simulating everyone else
+	handle_multiplayer_ownership(is_multiplayer_authority())
 
 ## `_input`, but it only runs after normal `_input` to allow
 ## it to cancel out input here. Useful to disallow mouse look
 ## in menus or something
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		free_mouse()
+	if event is InputEventMouseButton:
+		lock_mouse()
 	if event is InputEventMouseMotion:
 		handle_look(event)
 
@@ -44,6 +44,17 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 # HELPER FUNCTIONS
+
+# Multiplayer - START
+
+func handle_multiplayer_ownership(owns_this: bool) -> void:
+	if owns_this:
+		eyes.current = true
+	else:
+		set_physics_process(false)
+		set_process_unhandled_input(false)
+
+# Multiplayer - END
 
 # ---
 
@@ -70,7 +81,7 @@ func handle_look(mouse_motion: InputEventMouseMotion) -> void:
 		# rotate head up and down
 		head.rotate_x(-mouse_motion.relative.y * camera_sensitivity)
 		# dont allow rotation past 90 degrees
-		clamp(head.rotation.x, -PI/2, PI/2)
+		head.rotation.x = clamp(head.rotation.x, -PI/2, PI/2)
 
 # Camera Logic - END
 
