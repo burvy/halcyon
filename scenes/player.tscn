@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://jgvtq3qju18w" path="res://scripts/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://cmursnrjv64nj" path="res://scripts/arms.gd" id="2_g2els"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_eoo3q"]
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ir3ff"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g2els"]
@@ -34,6 +36,9 @@ raycast = NodePath("RayCast3D")
 transform = Transform3D(1, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0)
 
 [node name="PlayerModel" type="Skeleton3D" parent="." unique_id=1289631348]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerModel" unique_id=169712633]
+mesh = SubResource("CapsuleMesh_eoo3q")
 
 [node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=594270998]
 shape = SubResource("CapsuleShape3D_ir3ff")

@@ -5,16 +5,25 @@ extends Node3D
 @export var players: Node
 @export var player_scene: PackedScene
 
-const PORT: int = 7777
+const PORT: int = 14641
+const WS_PORT: int = 14642
+
 const MAX_PLAYERS: int = 64
 
-
-func _on_host_pressed() -> void:
-	host_game()
+func _on_join_online_pressed() -> void:
+	join_game_online(input_address.text)
 	menu.hide()
 
-func _on_join_pressed() -> void:
-	join_game(input_address.text)
+func _on_join_offline_pressed() -> void:
+	join_game_offline(input_address.text)
+	menu.hide()
+
+func _on_host_headed_pressed() -> void:
+	host_game_headed()
+	menu.hide()
+
+func _on_host_headless_pressed() -> void:
+	host_game_headless()
 	menu.hide()
 
 func _ready() -> void:
@@ -40,13 +49,25 @@ func _despawn_player(id: int) -> void:
 		p.queue_free()
 
 
-func host_game() -> void:
+func host_game_headed() -> void:
 	var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	peer.create_server(PORT, MAX_PLAYERS)
 	multiplayer.multiplayer_peer = peer
 	_spawn_player(multiplayer.get_unique_id())
 
-func join_game(address: String) -> void:
+## host the game but headless for websocket
+func host_game_headless() -> void:
+	var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
+	peer.create_server(WS_PORT, MAX_PLAYERS)
+	multiplayer.multiplayer_peer = peer
+
+
+func join_game_offline(address: String) -> void:
 	var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	peer.create_client(address, PORT)
+	multiplayer.multiplayer_peer = peer
+
+func join_game_online(address: String) -> void:
+	var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
+	peer.create_client("ws://%s:%d" % [address, WS_PORT])
 	multiplayer.multiplayer_peer = peer
