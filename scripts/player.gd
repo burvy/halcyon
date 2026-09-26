@@ -11,19 +11,22 @@ extends CharacterBody3D
 
 ## logic to run on game start
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	# locks the mouse when the game starts
+	lock_mouse()
+
+func _input(event: InputEvent) -> void:
+	if Input.is_action_pressed("ui_close_dialog"):
+		free_mouse()
+	if event is InputEventMouseButton:
+		lock_mouse()
+
 
 ## `_input`, but it only runs after normal `_input` to allow
 ## it to cancel out input here. Useful to disallow mouse look
 ## in menus or something
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		# rotate body left and right
-		rotate_y(-event.relative.x * camera_sensitivity)
-		# rotate head up and down
-		head.rotate_x(-event.relative.y * camera_sensitivity)
-		# dont allow rotation past 90 degrees
-		clamp(head.rotation.x, -PI/2, PI/2)
+		handle_look(event)
 
 ## per physics-tick logic
 func _physics_process(delta: float) -> void:
@@ -35,6 +38,41 @@ func _physics_process(delta: float) -> void:
 	handle_motion(Input.is_action_pressed("sprint"), grounded, Input.get_vector("west", "east", "north", "south"))
 
 	move_and_slide()
+
+# HELPER FUNCTIONS
+
+# ---
+
+# Mouse Locking - START
+
+## locks the mouse
+func lock_mouse() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+## frees the mouse
+func free_mouse() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+# Mouse Locking - END
+
+# ---
+
+# Camera Logic - START
+
+## adds accumulated look motion to the player's head
+func handle_look(mouse_motion: InputEventMouseMotion) -> void:
+		# rotate body left and right
+		rotate_y(-mouse_motion.relative.x * camera_sensitivity)
+		# rotate head up and down
+		head.rotate_x(-mouse_motion.relative.y * camera_sensitivity)
+		# dont allow rotation past 90 degrees
+		clamp(head.rotation.x, -PI/2, PI/2)
+
+# Camera Logic - END
+
+# ---
+
+# Player Motion - START
 
 ## accelerates players downwards
 ## the equation **v = at + u*,
@@ -78,3 +116,5 @@ func handle_motion(sprinting: bool, grounded: bool, desire: Vector2) -> void:
 	# adding that to player velocity
 	velocity.x = direction.x * move
 	velocity.z = direction.z * move
+
+# Player Motion - END
