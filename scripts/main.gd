@@ -10,6 +10,11 @@ const WS_PORT: int = 14642
 
 const MAX_PLAYERS: int = 64
 
+
+func _ready() -> void:
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+
 func _on_join_online_pressed() -> void:
 	join_game_online(input_address.text)
 	menu.hide()
@@ -27,9 +32,6 @@ func _on_host_renderless_pressed() -> void:
 	get_viewport().scaling_3d_scale = 0.05
 	menu.hide()
 
-func _ready() -> void:
-	multiplayer.peer_connected.connect(_on_peer_connected)
-	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 func _on_peer_connected(id: int) -> void:
 	if multiplayer.is_server():

@@ -13,6 +13,7 @@ config_version=5
 config/name="halcyon"
 run/main_scene="uid://da1qsjcn71o18"
 config/features=PackedStringArray("4.7")
+boot_splash/image="uid://ddvka5biu6sra"
 config/icon="res://icon.svg"
 
 [display]
