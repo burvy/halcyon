@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://da1qsjcn71o18"]
 
+[ext_resource type="Script" uid="uid://dh1sl4a8hvswj" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://cefgnum6eprwq" path="res://scenes/test_level.tscn" id="1_o5qli"]
 
 [node name="Main" type="Node3D" unique_id=1758475354]
+script = ExtResource("1_0wfyh")
 
 [node name="TestLevel" parent="." unique_id=1039025625 instance=ExtResource("1_o5qli")]
 
