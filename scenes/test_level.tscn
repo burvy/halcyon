@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://cefgnum6eprwq"]
 
+[ext_resource type="PackedScene" uid="uid://ve1kpwjb3l2a" path="res://scenes/player.tscn" id="1_2venv"]
+
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ir3ff"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ir3ff"]
@@ -18,6 +20,8 @@ ambient_light_source = 3
 
 [node name="MainSpawnPoint" type="Marker3D" parent="." unique_id=1009076462]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="Player" parent="MainSpawnPoint" unique_id=591899681 instance=ExtResource("1_2venv")]
 
 [node name="Baseplate" type="StaticBody3D" parent="." unique_id=140046218]
 

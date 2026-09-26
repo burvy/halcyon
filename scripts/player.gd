@@ -1,0 +1,60 @@
+extends CharacterBody3D
+
+
+@export var move_speed = 5.0
+@export var sprint_mul = 1.5
+@export var jump_speed = 4.5
+
+
+func _physics_process(delta: float) -> void:
+
+	var grounded: bool = is_on_floor()
+
+	handle_gravity(delta, grounded)
+	handle_jump(Input.is_action_pressed("jump"), grounded)
+	handle_motion(Input.is_action_pressed("sprint"), grounded, Input.get_vector("west", "east", "north", "south"))
+
+	move_and_slide()
+
+## accelerates players downwards
+## the equation **v = at + u*,
+## equivalently, **v += at**
+## the player does not accelerate downwards if they are
+## already grounded.
+func handle_gravity(delta: float, grounded: bool) -> void:
+	if not grounded:
+		velocity += get_gravity() * delta
+
+## makes players jump
+## if the player is jumping and is grounded, they get + `jump_speed`
+## applied to the y component of their velocity
+func handle_jump(jumping: bool, grounded: bool) -> void:
+	if jumping and grounded:
+		velocity.y = jump_speed
+
+## applies motion
+## if the player is not grounded, they cannot move.
+## if the player is not trying to move, do not move.
+## if the player is sprinting, apply `sprint_mul` to their `move_speed`.
+## otherwise, they will move at the normal `move_speed`
+func handle_motion(sprinting: bool, grounded: bool, desire: Vector2) -> void:
+	# skip movement if not touching the ground
+	if not grounded:
+		return
+
+	# skip calculation if not moving
+	if not desire:
+		velocity.x = 0.0
+		velocity.z = 0.0
+		return
+
+	# adds the desire vector onto where the player is already facing
+	var direction: Vector3 = (transform.basis * Vector3(desire.x, 0, desire.y))
+
+	# determines the player's speed based on if they are sprinting
+	var move = (move_speed * sprint_mul) if sprinting else move_speed
+
+	# multiplies the direction vector by speed,
+	# adding that to player velocity
+	velocity.x = direction.x * move
+	velocity.z = direction.z * move
