@@ -35,7 +35,11 @@ func _physics_process(delta: float) -> void:
 
 	handle_gravity(delta, grounded)
 	handle_jump(Input.is_action_pressed("jump"), grounded)
-	handle_motion(Input.is_action_pressed("sprint"), grounded, Input.get_vector("west", "east", "north", "south"))
+	handle_motion(
+		Input.is_action_pressed("sprint"),
+		grounded,
+		Input.get_vector("west", "east", "north", "south")
+	)
 
 	move_and_slide()
 
