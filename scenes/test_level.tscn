@@ -16,6 +16,10 @@ background_mode = 2
 sky = SubResource("Sky_3p835")
 ambient_light_source = 3
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ir3ff"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xnxnk"]
+
 [node name="TestLevel" type="Node3D" unique_id=1039025625]
 
 [node name="MainSpawnPoint" type="Marker3D" parent="." unique_id=1009076462]
@@ -37,3 +41,12 @@ transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1352038501]
 environment = SubResource("Environment_eoo3q")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=152383889]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 1.5, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=936003893]
+shape = SubResource("BoxShape3D_ir3ff")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=1674077383]
+mesh = SubResource("BoxMesh_xnxnk")

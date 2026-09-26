@@ -21,3 +21,4 @@ more. For example, menu interactions. You wouldn't want player camera
 looking to work on the pause menu.
 
 [PLAYER SCRIPT](docs/PLAYER.md)
+[ARMS SCRIPT](docs/ARMS.md)

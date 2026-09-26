@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ve1kpwjb3l2a"]
 
 [ext_resource type="Script" uid="uid://jgvtq3qju18w" path="res://scripts/player.gd" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://cmursnrjv64nj" path="res://scripts/arms.gd" id="2_g2els"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ir3ff"]
 
@@ -13,7 +14,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5999999, 0)
 
 [node name="Eyes" type="Camera3D" parent="Head" unique_id=1372877274]
 
-[node name="Arms" type="Node3D" parent="Head" unique_id=2119921914]
+[node name="Arms" type="Node3D" parent="Head" unique_id=2119921914 node_paths=PackedStringArray("raycast")]
+script = ExtResource("2_g2els")
+raycast = NodePath("RayCast3D")
+
+[node name="RayCast3D" type="RayCast3D" parent="Head/Arms" unique_id=1246182010]
+transform = Transform3D(1, 0, 0, 0, -0.99999976, -8.7422755e-08, 0, 8.7422755e-08, -0.99999976, 0, 0, 0)
 
 [node name="PlayerModel" type="Skeleton3D" parent="." unique_id=1289631348]
 
