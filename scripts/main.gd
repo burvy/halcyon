@@ -32,7 +32,6 @@ func _on_peer_disconnected(id: int) -> void:
 func _spawn_player(id: int) -> void:
 	var player: Node = player_scene.instantiate()
 	player.name = str(id)
-	player.set_multiplayer_authority(id)
 	players.add_child(player)
 
 func _despawn_player(id: int) -> void:

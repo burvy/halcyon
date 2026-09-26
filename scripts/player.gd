@@ -12,6 +12,8 @@ extends CharacterBody3D
 
 ## logic to run on game start
 func _ready() -> void:
+	# agree on who owns what
+	set_multiplayer_authority(name.to_int())
 	# locks the mouse when the game starts
 	lock_mouse()
 	# prevents players from simulating everyone else
