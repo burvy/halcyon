@@ -18,12 +18,13 @@ func _on_join_offline_pressed() -> void:
 	join_game_offline(input_address.text)
 	menu.hide()
 
-func _on_host_headed_pressed() -> void:
+func _on_host_rendered_pressed() -> void:
 	host_game_headed()
 	menu.hide()
 
-func _on_host_headless_pressed() -> void:
-	host_game_headless()
+func _on_host_renderless_pressed() -> void:
+	host_game_renderless()
+	get_viewport().scaling_3d_scale = 0.05
 	menu.hide()
 
 func _ready() -> void:
@@ -55,10 +56,10 @@ func host_game_headed() -> void:
 	multiplayer.multiplayer_peer = peer
 	_spawn_player(multiplayer.get_unique_id())
 
-## host the game but headless for websocket
-func host_game_headless() -> void:
-	var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
-	peer.create_server(WS_PORT, MAX_PLAYERS)
+## host the game but renderless for websocket and performance
+func host_game_renderless() -> void:
+	var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
+	peer.create_server(WS_PORT)
 	multiplayer.multiplayer_peer = peer
 
 
