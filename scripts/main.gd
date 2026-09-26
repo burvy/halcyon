@@ -8,8 +8,8 @@ extends Node3D
 const PORT: int = 14641
 const WS_PORT: int = 14642
 
-const CERT_DIR: String = "C:/burvy/certs/webtrans.burvy.dev"
-const DEFAULT_SERVER: String = "webtrans.burvy.dev"
+const CERT_DIR: String = "C:/Users/Burvy/AppData/Local/Posh-ACME/LE_PROD/3716529536/174.175.161.63"
+const DEFAULT_SERVER: String = "174.175.161.63"
 
 const MAX_PLAYERS: int = 64
 
@@ -17,6 +17,8 @@ const MAX_PLAYERS: int = 64
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	if DisplayServer.get_name() == "headless":
+		host_game_renderless()
 
 func _on_join_online_pressed() -> void:
 	join_game_online(DEFAULT_SERVER)
@@ -69,11 +71,11 @@ func host_game_headed() -> void:
 ## host the game but renderless for websocket and performance
 func host_game_renderless() -> void:
 	var key: CryptoKey = CryptoKey.new()
-	var key_err: Error = key.load(CERT_DIR + "/webtrans.burvy.dev-key.pem")
+	var key_err: Error = key.load(CERT_DIR + "/cert.key")
 	print("key load ", error_string(key_err))
 
 	var cert: X509Certificate = X509Certificate.new()
-	var cert_err: Error = cert.load(CERT_DIR + "/webtrans.burvy.dev-chain.pem")
+	var cert_err: Error = cert.load(CERT_DIR + "/fullchain.cer")
 	print("cert load: ", error_string(cert_err))
 
 	var tls_options: TLSOptions = TLSOptions.server(key, cert)
